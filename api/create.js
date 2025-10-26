@@ -1,34 +1,25 @@
-const fs = require("fs");
-const path = require("path");
+import { kv } from '@vercel/kv';
 
-module.exports = (req, res) => {
-  if (req.method !== "POST") return res.status(405).send("Use POST");
+export default async function handler(req, res) {
+  if (req.method !== 'POST') return res.status(405).send("Use POST");
 
-  let body = "";
-  req.on("data", chunk => body += chunk);
-  req.on("end", () => {
-    try {
-      const { url } = JSON.parse(body);
-      if (!url) return res.status(400).send("URL é obrigatória");
+  try {
+    const { url } = req.body || {};
+    if (!url) return res.status(400).send("URL é obrigatória");
 
-      const filePath = path.join(process.cwd(), "storage.json");
-      const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
+    // gerar slug aleatório de 6 caracteres
+    let slug;
+    do {
+      slug = Math.random().toString(36).substring(2, 8);
+    } while (await kv.exists(slug));
 
-      // gerar slug aleatório de 6 caracteres
-      let slug;
-      do {
-        slug = Math.random().toString(36).substring(2, 8);
-      } while (data[slug]);
+    // salvar slug -> url
+    await kv.set(slug, url);
 
-      // salvar no storage.json
-      data[slug] = url;
-      fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-
-      // retorna link curto
-      res.status(200).json({ shortUrl: `https://rabbit-files-x.vercel.app/${slug}` });
-    } catch (err) {
-      console.error(err);
-      res.status(500).send("Erro no servidor");
-    }
-  });
-};
+    // retorna link curto
+    res.status(200).json({ shortUrl: `https://rabbit-files-x.vercel.app/${slug}` });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Erro ao criar link curto");
+  }
+}
