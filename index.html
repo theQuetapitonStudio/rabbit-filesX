@@ -17,23 +17,26 @@
   <p>Crie um link curto com o nome que quiser e adicione no <code>data.json</code>.</p>
 
   <input id="slug" placeholder="nome curto (ex: applev2)">
-  <input id="url" placeholder="URL completa (https://...)">
-  <button onclick="gerar()">Gerar link</button>
+  <input id="url" placeholder="Cole seu link...">
+<button onclick="gerar()">Encurtar</button>
+<p id="saida"></p>
 
-  <p id="saida"></p>
+<script>
+async function gerar() {
+  const url = document.getElementById('url').value.trim();
+  if (!url) return alert("Coloque a URL!");
 
-  <script>
-    function gerar() {
-      const slug = document.getElementById('slug').value.trim();
-      const url = document.getElementById('url').value.trim();
-      if (!slug || !url) return alert("Preencha tudo!");
-      const link = `https://rabbit-filesX.vercel.app/${slug}`;
-      document.getElementById('saida').innerHTML = `
-        ✅ <strong>Seu link curto:</strong> <a href="${link}" target="_blank">${link}</a><br>
-        Agora vá em <code>data.json</code> e adicione:<br>
-        "<b>${slug}</b>": "${url}"
-      `;
-    }
-  </script>
+  const res = await fetch("/api/create", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ url })
+  });
+  const data = await res.json();
+  document.getElementById('saida').innerHTML = `
+    🔗 Link curto: <a href="${data.shortUrl}" target="_blank">${data.shortUrl}</a>
+  `;
+}
+</script>
+
 </body>
 </html>

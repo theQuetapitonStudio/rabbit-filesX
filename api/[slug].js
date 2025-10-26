@@ -2,10 +2,10 @@ const fs = require("fs");
 const path = require("path");
 
 module.exports = (req, res) => {
-  const filePath = path.join(process.cwd(), "data.json");
+  const filePath = path.join(process.cwd(), "storage.json");
   const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
 
-  const slug = req.query.slug;
+  const { slug } = req.query;
   const destino = data[slug];
 
   if (destino) {
