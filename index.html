@@ -10,33 +10,38 @@
     button { padding: 10px 20px; background: #4caf50; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
     button:hover { background: #45a049; }
     p { margin-top: 20px; }
+    a { color: #4caf50; text-decoration: none; }
+    a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
-  <h1>🔗 Encurtador de Links</h1>
-  <p>Crie um link curto com o nome que quiser e adicione no <code>data.json</code>.</p>
+  <h1>🔗 Encurtador de Links Automático</h1>
+  <input id="url" placeholder="Cole seu link completo (https://...)" />
+  <button onclick="gerar()">Encurtar</button>
+  <p id="saida"></p>
 
-  <input id="slug" placeholder="nome curto (ex: applev2)">
-  <input id="url" placeholder="Cole seu link...">
-<button onclick="gerar()">Encurtar</button>
-<p id="saida"></p>
+  <script>
+    async function gerar() {
+      const url = document.getElementById('url').value.trim();
+      if (!url) return alert("Coloque a URL!");
 
-<script>
-async function gerar() {
-  const url = document.getElementById('url').value.trim();
-  if (!url) return alert("Coloque a URL!");
+      try {
+        const res = await fetch("/api/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url })
+        });
+        if (!res.ok) throw new Error("Erro ao encurtar");
 
-  const res = await fetch("/api/create", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ url })
-  });
-  const data = await res.json();
-  document.getElementById('saida').innerHTML = `
-    🔗 Link curto: <a href="${data.shortUrl}" target="_blank">${data.shortUrl}</a>
-  `;
-}
-</script>
-
+        const data = await res.json();
+        document.getElementById('saida').innerHTML = `
+          🔗 Link curto criado: <a href="${data.shortUrl}" target="_blank">${data.shortUrl}</a>
+        `;
+      } catch (err) {
+        console.error(err);
+        alert("Erro ao criar link curto");
+      }
+    }
+  </script>
 </body>
 </html>

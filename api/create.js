@@ -14,19 +14,20 @@ module.exports = (req, res) => {
       const filePath = path.join(process.cwd(), "storage.json");
       const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
 
-      // gera slug aleatório de 6 caracteres
+      // gerar slug aleatório de 6 caracteres
       let slug;
       do {
         slug = Math.random().toString(36).substring(2, 8);
       } while (data[slug]);
 
-      // salva
+      // salvar no storage.json
       data[slug] = url;
       fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 
       // retorna link curto
-      res.status(200).json({ shortUrl: `https://seusite.vercel.app/${slug}` });
+      res.status(200).json({ shortUrl: `https://rabbit-files-x.vercel.app/${slug}` });
     } catch (err) {
+      console.error(err);
       res.status(500).send("Erro no servidor");
     }
   });
