@@ -1,0 +1,25 @@
+body {
+    text-align: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    padding: 10px;
+}
+
+#example-img {
+    width: 200px;
+    border-radius: 500px;
+}
+
+#downloadBTN {
+    padding: 20px;
+    border-radius: 10px;
+    border: 0;
+    background: linear-gradient(135deg, #0f0, #028d30);
+}
+
+#downloadBTN:hover {
+    transform: scale(1.1);
+}
+
+#downloadBTN:active {
+    transform: scale(0.9);
+}
