@@ -1,4 +1,4 @@
-function create_site(img, link, title, creator = "THE QUETAPITON STUDIO"){
+function create_site(img, link, title, creator = "THE QUETAPITON STUDIO") {
     let foto = document.createElement("img")
     foto.src = img
     foto.style.borderRadius = "500px"
@@ -17,6 +17,12 @@ function create_site(img, link, title, creator = "THE QUETAPITON STUDIO"){
     btn1.style.borderRadius = "20px"
     btn1.style.border = 0
     btn1.style.background = "linear-gradient(135deg, #0f0, #028d30)"
+    btn1.style.cursor = "pointer"
+
+    let credits = document.createElement("footer")
+    let creditText = document.createElement("p")
+    creditText.textContent = "MADE BY " + creator
+    credits.appendChild(creditText)
 
     btn1.addEventListener("click", () => {
         let lnk = document.createElement("a")
@@ -24,7 +30,9 @@ function create_site(img, link, title, creator = "THE QUETAPITON STUDIO"){
         lnk.download = title
         lnk.click()
     })
+
     body.appendChild(foto)
     body.appendChild(titulu)
     body.appendChild(btn1)
+    body.appendChild(credits)
 }
