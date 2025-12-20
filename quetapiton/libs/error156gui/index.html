@@ -2,87 +2,233 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>error156gui CLang | Docs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>error156gui C | Documentação</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
     <style>
-        body { font-family: sans-serif; background: #1a1a1a; color: #eee; line-height: 1.6; padding: 40px; }
-        code { background: #333; padding: 2px 5px; border-radius: 4px; color: #00ff99; }
-        pre { background: #000; padding: 15px; border-left: 5px solid #00ff99; overflow-x: auto; }
-        .download-btn { background: #00ff99; color: #000; padding: 15px 25px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        .download-btn:hover { background: #00cc7a; }
+        :root {
+            --bg: #0f172a;
+            --sidebar: #1e293b;
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --text: #f1f5f9;
+            --code-bg: #011627;
+        }
+
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; display: flex; }
+        nav { width: 260px; background-color: var(--sidebar); height: 100vh; position: fixed; padding: 25px; border-right: 1px solid #334155; overflow-y: auto; }
+        nav h1 { color: var(--accent); font-size: 1.4rem; margin-bottom: 30px; letter-spacing: -1px; }
+        nav a { display: block; color: #94a3b8; text-decoration: none; margin: 12px 0; font-size: 0.95rem; transition: 0.2s; }
+        nav a:hover { color: var(--accent); padding-left: 5px; }
+        
+        main { margin-left: 310px; padding: 40px; max-width: 900px; }
+        .badge { background: #334155; padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; color: var(--accent); font-weight: bold; text-transform: uppercase; }
+        
+        .btn-download {
+            background-color: var(--accent); color: var(--bg); padding: 14px 28px; border-radius: 8px;
+            text-decoration: none; font-weight: 800; display: inline-flex; align-items: center; gap: 12px;
+            border: none; cursor: pointer; transition: 0.2s; margin: 25px 0; font-size: 1rem;
+        }
+        .btn-download:hover { background-color: var(--accent-hover); transform: translateY(-2px); }
+
+        h2 { border-bottom: 1px solid #334155; padding-bottom: 10px; margin-top: 60px; color: var(--accent); }
+        pre { background-color: var(--code-bg); padding: 20px; border-radius: 12px; border: 1px solid #1e293b; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .method-card { background: #1e293b; padding: 20px; border-radius: 8px; border-left: 4px solid var(--accent); margin: 20px 0; }
+        .method-card h3 { margin-top: 0; font-family: 'Fira Code', monospace; font-size: 1.1rem; color: #e2e8f0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        table th { text-align: left; color: #64748b; font-size: 0.8rem; text-transform: uppercase; padding: 8px; }
+        table td { padding: 8px; border-top: 1px solid #334155; font-size: 0.9rem; }
     </style>
 </head>
 <body>
-    <h1>error156gui <small>(Versão C Puro)</small></h1>
-    <p>Uma biblioteca leve em C para criação de janelas Windows.</p>
 
-    <button class="download-btn" onclick="downloadCLib()">BAIXAR .H AGORA</button>
+<nav>
+    <h1>error156gui <span style="font-size: 0.7rem; color: #64748b;">ANSI C</span></h1>
+    <a href="#intro">O que é?</a>
+    <a href="#download">Download</a>
+    <a href="#setup">Configuração (GCC)</a>
+    <a href="#exemplo">Exemplo Completo</a>
+    <a href="#referencia">API Reference</a>
+</nav>
 
-    <h2>Exemplo de Uso (main.c)</h2>
-    <pre><code>#include "error156gui.h"
+<main>
+    <section id="intro">
+        <span class="badge">Pure C Version</span>
+        <h1>Simplicidade em Win32</h1>
+        <p>A <strong>error156gui</strong> é uma biblioteca <em>header-only</em> escrita em C puro. Ela abstrai a complexidade do Windows SDK, permitindo que você crie janelas e controles com poucas linhas de código, sem arquivos <code>.cpp</code> ou <code>.obj</code> externos.</p>
+    </section>
 
-void acao() {
-    MessageBox(NULL, "Clicado!", "Aviso", MB_OK);
+    <section id="download">
+        <h2>Obter Biblioteca</h2>
+        <p>O arquivo gerado é um <code>.h</code> único contendo toda a implementação.</p>
+        <button class="btn-download" onclick="downloadLib()">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            Baixar error156gui.h
+        </button>
+    </section>
+
+    <section id="setup">
+        <h2>Compilação</h2>
+        <p>Para compilar um arquivo <code>main.c</code> usando esta biblioteca com MinGW/GCC:</p>
+        <pre><code>gcc main.c -o app.exe -lgdi32 -luser32</code></pre>
+    </section>
+
+    <section id="exemplo">
+        <h2>Exemplo Prático</h2>
+        <pre><code class="language-c">#include "error156gui.h"
+
+void OnClick() {
+    MessageBox(NULL, "Botão C clicado!", "Sucesso", MB_OK);
 }
 
 int main() {
     Error156GUI gui;
-    if (Error156_Init(&gui, "Minha App em C", 400, 300)) {
-        Error156_AddButton(&gui, "Botão C", 100, 100, 120, 40, acao);
+    if (Error156_Init(&gui, "Error156 Pure C", 500, 400)) {
+        Error156_AddLabel(&gui, "Digite seu nome:", 20, 20, 200, 25);
+        Error156_AddInput(&gui, "Campo de texto", 20, 50, 200, 30);
+        Error156_AddButton(&gui, "Confirmar", 20, 100, 120, 40, OnClick);
+        
         Error156_Run();
     }
     return 0;
 }</code></pre>
+    </section>
 
-    <h2>Como Compilar</h2>
-    <p>Use o compilador GCC:</p>
-    <code>gcc main.c -o app.exe -lgdi32 -luser32</code>
+    <section id="referencia">
+        <h2>Referência da API</h2>
+        
+        <div class="method-card">
+            <h3>Error156_Init(Error156GUI* gui, title, w, h)</h3>
+            <p>Inicializa a estrutura principal e registra a classe da janela no Windows.</p>
+        </div>
 
-    <script>
-        function downloadCLib() {
-            const code = `/* ERROR156GUI em C PURO */ \n` + document.querySelector('script#libcode').textContent;
-            const blob = new Blob([code], {type: 'text/plain'});
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url; a.download = 'error156gui.h';
-            a.click();
-        }
-    </script>
+        <div class="method-card">
+            <h3>Error156_AddButton(gui, text, x, y, w, h, callback)</h3>
+            <p>Cria um botão nativo. O <code>callback</code> deve ser uma função <code>void f()</code>.</p>
+        </div>
 
-    <script type="text/plain" id="libcode">
-#ifndef ERROR156GUI_H
+        <div class="method-card">
+            <h3>Error156_AddInput(gui, placeholder, x, y, w, h)</h3>
+            <p>Cria um campo de entrada de texto (Edit Control).</p>
+        </div>
+
+        <div class="method-card">
+            <h3>Error156_AddLabel(gui, text, x, y, w, h)</h3>
+            <p>Cria um texto estático na tela.</p>
+        </div>
+    </section>
+
+    <footer style="margin-top: 80px; padding-bottom: 40px; color: #475569; font-size: 0.8rem;">
+        &copy; 2025 Error156 Library. Desenvolvido para máxima performance em C.
+    </footer>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script>
+    hljs.highlightAll();
+
+    function downloadLib() {
+        const libCode = `#ifndef ERROR156GUI_H
 #define ERROR156GUI_H
+
 #include <windows.h>
-#define MAX_CONTROLS 64
+
+#define MAX_CONTROLS 128
+
 typedef void (*OnClickCallback)(void);
-typedef struct { HWND hwnd; OnClickCallback callback; int id; } GuiControl;
-typedef struct { HINSTANCE hInstance; HWND hwndMain; GuiControl controls[MAX_CONTROLS]; int controlCount; int nextControlId; } Error156GUI;
-static LRESULT CALLBACK Error156_WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+
+typedef struct {
+    HWND hwnd;
+    OnClickCallback callback;
+    int id;
+} Error156Control;
+
+typedef struct {
+    HINSTANCE hInstance;
+    HWND hwndMain;
+    Error156Control controls[MAX_CONTROLS];
+    int controlCount;
+    int nextId;
+} Error156GUI;
+
+static LRESULT CALLBACK Error156_Proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
     Error156GUI* gui = (Error156GUI*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
-    if (uMsg == WM_COMMAND && gui) {
+    if (msg == WM_COMMAND && gui) {
         for (int i = 0; i < gui->controlCount; i++) {
-            if (gui->controls[i].id == LOWORD(wParam) && gui->controls[i].callback) gui->controls[i].callback();
+            if (gui->controls[i].id == LOWORD(wp) && gui->controls[i].callback) {
+                gui->controls[i].callback();
+            }
         }
     }
-    if (uMsg == WM_DESTROY) PostQuitMessage(0);
-    return DefWindowProc(hwnd, uMsg, wParam, lParam);
+    if (msg == WM_DESTROY) PostQuitMessage(0);
+    return DefWindowProc(hwnd, msg, wp, lp);
 }
-static int Error156_Init(Error156GUI* gui, const char* title, int width, int height) {
-    gui->hInstance = GetModuleHandle(NULL); gui->controlCount = 0; gui->nextControlId = 100;
-    WNDCLASS wc = {0}; wc.lpfnWndProc = Error156_WndProc; wc.hInstance = gui->hInstance;
-    wc.lpszClassName = "Error156CClass"; wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1); RegisterClass(&wc);
-    gui->hwndMain = CreateWindowEx(0, wc.lpszClassName, title, WS_OVERLAPPEDWINDOW | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, gui->hInstance, NULL);
-    if (gui->hwndMain) { SetWindowLongPtr(gui->hwndMain, GWLP_USERDATA, (LONG_PTR)gui); return 1; }
+
+static int Error156_Init(Error156GUI* gui, const char* title, int w, int h) {
+    gui->hInstance = GetModuleHandle(NULL);
+    gui->controlCount = 0;
+    gui->nextId = 1000;
+
+    WNDCLASS wc = {0};
+    wc.lpfnWndProc = Error156_Proc;
+    wc.hInstance = gui->hInstance;
+    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wc.hbrBackground = (HBRUSH)(COLOR_BTNFACE + 1);
+    wc.lpszClassName = "Error156_C_Class";
+    RegisterClass(&wc);
+
+    gui->hwndMain = CreateWindowEx(0, wc.lpszClassName, title, 
+        WS_OVERLAPPEDWINDOW | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, 
+        w, h, NULL, NULL, gui->hInstance, NULL);
+
+    if (gui->hwndMain) {
+        SetWindowLongPtr(gui->hwndMain, GWLP_USERDATA, (LONG_PTR)gui);
+        SendMessage(gui->hwndMain, WM_SETFONT, (WPARAM)GetStockObject(DEFAULT_GUI_FONT), TRUE);
+        return 1;
+    }
     return 0;
 }
-static void Error156_AddButton(Error156GUI* gui, const char* text, int x, int y, int w, int h, OnClickCallback cb) {
+
+static void Error156_AddButton(Error156GUI* gui, const char* txt, int x, int y, int w, int h, OnClickCallback cb) {
     if (gui->controlCount >= MAX_CONTROLS) return;
-    HWND hBtn = CreateWindow("BUTTON", text, WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, x, y, w, h, gui->hwndMain, (HMENU)(INT_PTR)gui->nextControlId, gui->hInstance, NULL);
-    gui->controls[gui->controlCount].hwnd = hBtn; gui->controls[gui->controlCount].callback = cb;
-    gui->controls[gui->controlCount].id = gui->nextControlId++; gui->controlCount++;
+    HWND hBtn = CreateWindow("BUTTON", txt, WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 
+        x, y, w, h, gui->hwndMain, (HMENU)(INT_PTR)gui->nextId, gui->hInstance, NULL);
+    SendMessage(hBtn, WM_SETFONT, (WPARAM)GetStockObject(DEFAULT_GUI_FONT), TRUE);
+    gui->controls[gui->controlCount].hwnd = hBtn;
+    gui->controls[gui->controlCount].callback = cb;
+    gui->controls[gui->controlCount].id = gui->nextId++;
+    gui->controlCount++;
 }
-static void Error156_Run() { MSG msg; while (GetMessage(&msg, NULL, 0, 0)) { TranslateMessage(&msg); DispatchMessage(&msg); } }
-#endif
-    </script>
+
+static void Error156_AddInput(Error156GUI* gui, const char* txt, int x, int y, int w, int h) {
+    HWND hInp = CreateWindowEx(WS_EX_CLIENTEDGE, "EDIT", txt, WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL, 
+        x, y, w, h, gui->hwndMain, NULL, gui->hInstance, NULL);
+    SendMessage(hInp, WM_SETFONT, (WPARAM)GetStockObject(DEFAULT_GUI_FONT), TRUE);
+}
+
+static void Error156_AddLabel(Error156GUI* gui, const char* txt, int x, int y, int w, int h) {
+    HWND hLab = CreateWindow("STATIC", txt, WS_CHILD | WS_VISIBLE, 
+        x, y, w, h, gui->hwndMain, NULL, gui->hInstance, NULL);
+    SendMessage(hLab, WM_SETFONT, (WPARAM)GetStockObject(DEFAULT_GUI_FONT), TRUE);
+}
+
+static void Error156_Run() {
+    MSG msg;
+    while (GetMessage(&msg, NULL, 0, 0)) { TranslateMessage(&msg); DispatchMessage(&msg); }
+}
+
+#endif`;
+
+        const blob = new Blob([libCode], { type: 'text/plain' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'error156gui.h';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+    }
+</script>
 </body>
 </html>
