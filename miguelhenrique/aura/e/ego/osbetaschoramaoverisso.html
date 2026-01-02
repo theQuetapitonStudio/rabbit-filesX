@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>SUPREMACIA TRALALERO - APENAS PARA ELITE</title>
+    <style>
+        :root {
+            --aura-color: #00f2ff; /* Aura Azul Gelo (Rare) */
+            --ego-gold: #ffcc00;
+        }
+
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px;
+        }
+
+        /* Efeito de Mogging na Tela */
+        #aura-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle, transparent 30%, rgba(0,0,0,0.9) 100%);
+            z-index: 10;
+            border: 10px solid var(--aura-color);
+            box-shadow: inset 0 0 100px var(--aura-color);
+            opacity: 0.5;
+        }
+
+        .main-container {
+            transform: rotateX(10deg);
+            text-align: center;
+            z-index: 5;
+        }
+
+        h1 {
+            font-size: 8rem;
+            margin: 0;
+            background: linear-gradient(90deg, #fff, var(--aura-color), var(--ego-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 30px var(--aura-color));
+            text-transform: uppercase;
+            font-style: italic;
+        }
+
+        /* O Obby de Ego */
+        .platform-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 50px;
+        }
+
+        .platform {
+            width: 120px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-bottom: 5px solid var(--aura-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transition: 0.1s;
+            cursor: pointer;
+            animation: float 2s infinite alternate ease-in-out;
+        }
+
+        .platform:hover {
+            background: var(--aura-color);
+            color: #000;
+            transform: scale(1.2) translateZ(50px);
+            box-shadow: 0 0 50px var(--aura-color);
+        }
+
+        @keyframes float {
+            from { transform: translateY(0) rotate(0deg); }
+            to { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        /* Sistema de Aura que segue o Mouse */
+        .cursor-aura {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0,242,255,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+
+        /* Mensagens para Betas */
+        .mogged-msg {
+            position: fixed;
+            color: red;
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-shadow: 0 0 10px black;
+            pointer-events: none;
+            animation: fall 1.5s forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        #ego-counter {
+            font-size: 2rem;
+            color: var(--ego-gold);
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body onclick="addAura(event)">
+
+    <div id="aura-overlay"></div>
+    <div class="cursor-aura" id="cursor"></div>
+
+    <div class="main-container">
+        <p style="letter-spacing: 10px; color: var(--aura-color)">BYE BYE • MEWING SINCE 2024</p>
+        <h1>MOGGED</h1>
+        <div id="ego-counter">AURA SCORE: 0</div>
+
+        <div class="platform-container">
+            <div class="platform" onmouseover="checkBeta()">TUNG</div>
+            <div class="platform" onmouseover="checkBeta()">TUNG</div>
+            <div class="platform" onmouseover="checkBeta()">SAHUR</div>
+            <div class="platform" onmouseover="checkBeta()">TRALALERO</div>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        const cursor = document.getElementById('cursor');
+        const egoCounter = document.getElementById('ego-counter');
+
+        // Segue o mestre (Aura Follow)
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        function addAura(e) {
+            score += 1000;
+            egoCounter.innerText = `AURA SCORE: ${score.toLocaleString()}`;
+            
+            // Texto de Ego
+            const t = document.createElement('div');
+            t.className = 'mogged-msg';
+            t.style.left = e.clientX + 'px';
+            t.style.top = e.clientY + 'px';
+            t.style.color = 'var(--ego-gold)';
+            t.innerText = "+1000 EGO (MAX)";
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 1500);
+        }
+
+        function checkBeta() {
+            // Se o movimento for muito lento, o jogo "moga" o usuário
+            const t = document.createElement('div');
+            t.className = 'mogged-msg';
+            t.style.left = Math.random() * window.innerWidth + 'px';
+            t.style.top = '0px';
+            t.innerText = "BETA DETECTADO: MOGGED 🤫🧏‍♂️";
+            document.body.appendChild(t);
+            
+            // Vibração de tela (Grave do Tung Tung)
+            document.body.style.transform = `translateX(${Math.random()*10}px)`;
+            setTimeout(() => document.body.style.transform = 'none', 50);
+        }
+
+        // Loop de áudio mental (Tung Tung Sahur)
+        console.log("%c TUNG TUNG TUNG TUNG SAHUR! ", "background: #000; color: #00f2ff; font-size: 25px; font-weight: bold;");
+    </script>
+</body>
+</html>
